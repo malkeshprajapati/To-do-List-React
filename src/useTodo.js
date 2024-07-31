@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { predefinedTasks } from "./todo.constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 function useTodo() {
@@ -12,6 +12,7 @@ function useTodo() {
   const LSTaskList = JSON.parse(localStorage.getItem("tasks"));
 
   const navigate = useNavigate()
+  const { todoId: id = null } = useParams()
 
   const [modalState, setModalState] = useState({
     title: "Add",
@@ -83,9 +84,6 @@ function useTodo() {
     const relevantTask = tasks[index];
     const {
       id: taskId,
-      name: taskName,
-      description: taskDescription,
-      priority: taskPriority,
       isComplete,
     } = relevantTask ?? {};
 
@@ -94,9 +92,6 @@ function useTodo() {
       return;
     }
 
-    handleModalState({ title: "Edit", taskId });
-    handleInputChange({ e: null, type: "update", taskName, taskDescription });
-    handleTaskPriority({ taskPriority });
     navigate(`/update/${taskId}`)
   };
 
@@ -143,7 +138,7 @@ function useTodo() {
       toast.success("Task updated successfully");
       setTasks((prevState) => {
         const updatedTasks = prevState.map((value) => {
-          if (id === value.id) {
+          if (+id === +value.id) {
             return {
               ...value,
               name: modalState.taskName,
@@ -155,8 +150,9 @@ function useTodo() {
           }
         });
 
-
         localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        navigate('/listing')
+
         return updatedTasks;
       });
     }
@@ -211,6 +207,23 @@ function useTodo() {
     setTasks(updatedTasks)
   };
 
+
+  useEffect(() => {
+    if (id) {
+      const relevantTask = tasks.filter(value => +value.id === +id);
+      console.log(relevantTask)
+      const {
+        id: taskId,
+        name: taskName,
+        description: taskDescription,
+        priority: taskPriority
+      } = relevantTask?.[0] ?? {};
+
+      handleModalState({ title: "Edit", taskId });
+      handleInputChange({ e: null, type: "update", taskName, taskDescription });
+      handleTaskPriority({ taskPriority });
+    }
+  }, [id, tasks])
 
   return {
     tasks,

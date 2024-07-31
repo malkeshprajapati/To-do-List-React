@@ -1,11 +1,11 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import { columns } from "../todo.constants";
 
 const taskPriorityColorLookupObject = {
     Critical: "bg-primary",
     Intermediate: "bg-tertiary",
-    Basic: "#000",
+    Basic: "bg-black",
 };
 
 function TaskListing({
@@ -13,6 +13,7 @@ function TaskListing({
     removeIndex,
     handleTaskComplete,
     handleRemoveTask,
+    handleTaskEdit,
     handleOnDragEnd,
 }) {
     return (
@@ -109,6 +110,13 @@ function TaskListing({
                                                                     className="h-4 w-[20%] cursor-pointer"
                                                                 />
                                                                 <div className="flex gap-x-3 justify-center w-[20%]">
+                                                                    <MdModeEdit
+                                                                        size={24}
+                                                                        className="text-primary cursor-pointer"
+                                                                        onClick={() =>
+                                                                            handleTaskEdit({ index: taskIndex })
+                                                                        }
+                                                                    />
                                                                     <MdDelete
                                                                         size={24}
                                                                         className="text-primary cursor-pointer"

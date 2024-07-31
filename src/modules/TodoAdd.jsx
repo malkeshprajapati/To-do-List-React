@@ -1,13 +1,17 @@
 import { IoAdd } from "react-icons/io5";
 import useTodo from '../useTodo';
+import { useParams } from "react-router-dom";
 
 function TodoAdd() {
     const {
         modalState,
         handleTaskPriority,
+        handleTaskUpdate,
         handleTaskSubmit,
         handleInputChange,
     } = useTodo();
+
+    const { todoId: id = null } = useParams()
 
     return (
         <div className="m-5 p-5 shadow-2xl border rounded-lg">
@@ -17,7 +21,7 @@ function TodoAdd() {
             >
                 <div className="flex justify-between px-5 py-3 border-b-2">
                     <h2 className="text-primary tracking-wide text-xl font-MontserratSemiBold">
-                        Add Task
+                        {id ? "Update" : "Add"} Task
                     </h2>
                 </div>
 
@@ -82,10 +86,10 @@ function TodoAdd() {
 
                 <div className="border-t-2 px-5 py-2">
                     <button
-                        onClick={handleTaskSubmit}
+                        onClick={id ? () => handleTaskUpdate({ id }) : handleTaskSubmit}
                         className="ml-auto flex gap-x-2 items-center bg-primary hover:bg-white text-white hover:text-primary border border-primary px-5 py-3 text-sm rounded-lg"
                     >
-                        Add Task <IoAdd size={18} />
+                        {id ? "Update" : "Add"} Task <IoAdd size={18} />
                     </button>
                 </div>
             </div>

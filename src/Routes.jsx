@@ -50,29 +50,34 @@ function SharedLayout({ children }) {
 }
 
 
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <RedirectToLisiting />
+    },
+    {
+        path: "/add",
+        element: (
+            <SharedLayout>
+                <TodoAdd />
+            </SharedLayout>
+        ),
+    },
+    {
+        path: "/listing",
+        element: (
+            <SharedLayout>
+                <TodoListing />
+            </SharedLayout>
+        ),
+    },
+    {
+        path: "/update/:todoId",
+        element: <TodoAdd />
+    },
+]);
+
 function Routes() {
-    const router = createBrowserRouter([
-        {
-            path: '/',
-            element: <RedirectToLisiting />
-        },
-        {
-            path: "/add",
-            element: (
-                <SharedLayout>
-                    <TodoAdd />
-                </SharedLayout>
-            ),
-        },
-        {
-            path: "/listing",
-            element: (
-                <SharedLayout>
-                    <TodoListing />
-                </SharedLayout>
-            ),
-        },
-    ]);
     return <RouterProvider router={router} />;
 }
 
