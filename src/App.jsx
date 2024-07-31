@@ -1,11 +1,11 @@
 import { Toaster } from "react-hot-toast";
-import HomePage from "./HomePage";
+import Routes from "./Routes";
 
 function App() {
   return (
     <>
       <Toaster position="top-center" />
-      <HomePage />
+      <Routes />
     </>
   );
 }

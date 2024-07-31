@@ -7,9 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#e40404",
-        secondary: "#fcd5d2",
-        tertiary: "#FFC600",
+        primary: "#000",
+        secondary: "#000",
+        tertiary: "#000",
       },
       screens: {
         xs: "480px"

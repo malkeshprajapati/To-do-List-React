@@ -1,16 +1,20 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { predefinedTasks } from "./homepage.constants";
+import { predefinedTasks } from "./todo.constants";
+import { useNavigate } from "react-router-dom";
 
-if (!localStorage.getItem("tasks")) {
-  localStorage.setItem("tasks", JSON.stringify(predefinedTasks));
-}
 
-const LSTaskList = JSON.parse(localStorage.getItem("tasks"));
+function useTodo() {
+  if (!localStorage.getItem("tasks")) {
+    localStorage.setItem("tasks", JSON.stringify(predefinedTasks));
+  }
 
-function useHomePage() {
+  const LSTaskList = JSON.parse(localStorage.getItem("tasks"));
+
+  const navigate = useNavigate()
+
   const [modalState, setModalState] = useState({
-    title: "",
+    title: "Add",
     isOpen: false,
     taskId: null,
     taskPriority: "",
@@ -86,13 +90,14 @@ function useHomePage() {
     } = relevantTask ?? {};
 
     if (isComplete) {
-      toast.error("Edit operation not allowed when task is marked as complete");
+      toast.error("Edit operation not allowed when tasku is marked as complete");
       return;
     }
 
     handleModalState({ title: "Edit", taskId });
     handleInputChange({ e: null, type: "update", taskName, taskDescription });
     handleTaskPriority({ taskPriority });
+    navigate(`/update/${taskId}`)
   };
 
   const handleTaskSubmit = () => {
@@ -118,6 +123,9 @@ function useHomePage() {
         ];
 
         localStorage.setItem("tasks", JSON.stringify(newState));
+
+        handleInputChange({ type: 'reset' })
+        handleTaskPriority({ taskPriority: "" })
         return newState;
       });
     }
@@ -224,4 +232,4 @@ function useHomePage() {
   };
 }
 
-export default useHomePage;
+export default useTodo;

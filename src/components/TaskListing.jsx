@@ -1,19 +1,17 @@
-import { MdModeEdit, MdDelete } from "react-icons/md";
-import { columns } from "../homepage.constants";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { IoAdd } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
+import { columns } from "../todo.constants";
 
 const taskPriorityColorLookupObject = {
     Critical: "bg-primary",
     Intermediate: "bg-tertiary",
-    Basic: "bg-green-500",
+    Basic: "#000",
 };
 
 function TaskListing({
     tasks,
     removeIndex,
     handleTaskComplete,
-    handleTaskEdit,
     handleRemoveTask,
     handleOnDragEnd,
 }) {
@@ -21,12 +19,8 @@ function TaskListing({
         <div className="w-full overflow-x-auto" style={{ height: "calc(100% - 57px)" }}>
             <>
                 {tasks.length === 0 ? (
-                    <p className="flex flex-wrap justify-center items-center absolute left-5 right-5 top-1/2  -translate-y-1/2">
-                        Please add a task using the
-                        <b className="flex gap-x-2 items-center mx-2 w-fit bg-primary text-white px-5 py-2 text-sm rounded-lg">
-                            Add Task <IoAdd size={18} />
-                        </b>
-                        button above.
+                    <p className="mt-5 text-center font-MontserratSemiBold text-xl">
+                        No tasks available to show
                     </p>
 
                 ) : (
@@ -115,13 +109,6 @@ function TaskListing({
                                                                     className="h-4 w-[20%] cursor-pointer"
                                                                 />
                                                                 <div className="flex gap-x-3 justify-center w-[20%]">
-                                                                    <MdModeEdit
-                                                                        size={24}
-                                                                        className="text-primary cursor-pointer"
-                                                                        onClick={() =>
-                                                                            handleTaskEdit({ index: taskIndex })
-                                                                        }
-                                                                    />
                                                                     <MdDelete
                                                                         size={24}
                                                                         className="text-primary cursor-pointer"
