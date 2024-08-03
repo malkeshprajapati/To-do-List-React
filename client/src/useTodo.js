@@ -95,7 +95,7 @@ function useTodo() {
     navigate(`/update/${taskId}`)
   };
 
-  const handleTaskSubmit = () => {
+  const handleTaskSubmit = async () => {
     if (!modalState.taskName) {
       toast.error("Please enter task name");
     } else if (!modalState.taskPriority) {
@@ -104,7 +104,7 @@ function useTodo() {
       toast.error("Please enter task description");
     } else {
       handleModalState({ title: "" });
-      toast.success("Task added successfully");
+      // toast.success("Task added successfully");
       setTasks((prevState) => {
         const newState = [
           ...prevState,
@@ -123,6 +123,27 @@ function useTodo() {
         handleTaskPriority({ taskPriority: "" })
         return newState;
       });
+
+      try {
+        const newTask = {
+          id: Date.now(),
+          name: modalState.taskName,
+          priority: modalState.taskPriority,
+          description: modalState.taskDescription,
+          isComplete: false,
+        }
+        const response = await fetch('http://localhost:3000/tasks', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newTask),
+        });
+        await response.json();
+        toast.success("Task saved in database successfully");
+      } catch (error) {
+        toast.success("Error saving task in database");
+      }
     }
   };
 
@@ -211,7 +232,6 @@ function useTodo() {
   useEffect(() => {
     if (id) {
       const relevantTask = tasks.filter(value => +value.id === +id);
-      console.log(relevantTask)
       const {
         id: taskId,
         name: taskName,
